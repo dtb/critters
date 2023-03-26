@@ -1,26 +1,4 @@
-from collections import defaultdict
-
-
-class Board:
-    def __init__(self, width: int, height: int):
-        self.width = width
-        self.height = height
-
-        self.state = defaultdict(lambda: False)
-
-    def __pos(self, x: int, y: int) -> int:
-        return x * self.width + y
-
-    def move(self, x: int, y: int, item) -> bool:
-        if (x < 0 or x >= self.width or y < 0 or y >= self.height):
-            raise ValueError("Invalid position")
-
-        if (self.state[self.__pos(x, y)] != False):
-            return False
-
-        self.state[self.__pos(x, y)] = item
-
-        return True
+from board import Board
 
 
 class Simulation:
