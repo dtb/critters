@@ -4,16 +4,18 @@ from critter import Critter
 
 
 class Simulation:
-    def __init__(self, board: Board, critters: list[Critter]):
+    def __init__(self, board: Board, critters: list[Critter], steps=10):
         self.board = board
-        print(self.board)
+        self.critters = critters
+        self.steps = steps
 
     def run(self):
-        '''Run one simulation step.'''
-        for critter in critters:
-            critter.behave(self.board)
-
-        print(self.board)
+        '''Run the simulation'''
+        for step in range(0, self.steps):
+            print(f'===={step}====')
+            print(self.board)
+            for critter in self.critters:
+                critter.behave(self.board)
 
 
 def init_critters(board: Board):
@@ -31,12 +33,13 @@ def init_critters(board: Board):
     return critters
 
 
-if __name__ == "__main__":
+def run():
     board = Board(10, 10)
     critters = init_critters(board)
 
     sim = Simulation(board, critters)
+    sim.run()
 
-    for step in range(10):
-        print(f'===={step}====')
-        sim.run()
+
+if __name__ == "__main__":
+    run()
