@@ -15,17 +15,13 @@ def test_board():
 
 def test_board_invalid():
     board = Board(10, 10)
-    with pytest.raises(ValueError):
-        board.move(-1, 0, "X")
+    assert not board.move(-1, 0, "X")
 
-    with pytest.raises(ValueError):
-        board.move(0, -1, "X")
+    assert not board.move(0, -1, "X")
 
-    with pytest.raises(ValueError):
-        board.move(11, 0, "X")
+    assert not board.move(11, 0, "X")
 
-    with pytest.raises(ValueError):
-        board.move(0, 11, "X")
+    assert not board.move(0, 11, "X")
 
 
 def test_board_moves():

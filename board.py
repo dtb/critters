@@ -15,7 +15,7 @@ class Board:
             for y in range(self.height):
                 item = self.board[self.__pos(x, y)]
 
-                board += "_" if not item else item
+                board += "_" if not item else str(item)
             board += "\n"
 
         return board
@@ -26,12 +26,16 @@ class Board:
     def __pos(self, x: int, y: int) -> int:
         return x * self.width + y
 
+    def locate(self, item) -> (int, int):
+        '''Return the position of an item on the board, or None if not found.'''
+        return self.critters.get(item, None)
+
     def move(self, x: int, y: int, item) -> bool:
         '''Move an item to a position.
          Returns True if successful, False if the position is occupied.'''
 
         if (x < 0 or x >= self.width or y < 0 or y >= self.height):
-            raise ValueError("Invalid position")
+            return False
 
         if self.board[self.__pos(x, y)]:
             return False
