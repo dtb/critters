@@ -37,7 +37,7 @@ class Simulation:
         self.__init()
 
         self.boards.append(str(self.board))
-        for step in range(0, self.steps):
+        for step in range(1, self.steps + 1):
             for critter in self.critters:
                 critter.behave(self.board)
 
