@@ -11,8 +11,8 @@ class Board:
 
     def __str__(self):
         board = ""
-        for x in range(self.width):
-            for y in range(self.height):
+        for y in range(self.width):
+            for x in range(self.height):
                 item = self.board[self.__pos(x, y)]
 
                 board += "_" if not item else str(item)
@@ -24,11 +24,16 @@ class Board:
         return self.board[self.__pos(*pos)]
 
     def __pos(self, x: int, y: int) -> int:
-        return x * self.width + y
+        return y * self.width + x
 
     def locate(self, item) -> (int, int):
         '''Return the position of an item on the board, or None if not found.'''
         return self.critters.get(item, None)
+
+    def remove(self, item):
+        pos = self.locate(item)
+        self.board[self.__pos(*pos)] = False
+        del self.critters[item]
 
     def move(self, x: int, y: int, item) -> bool:
         '''Move an item to a position.
