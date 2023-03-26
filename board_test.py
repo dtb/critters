@@ -33,7 +33,6 @@ def test_board_moves():
 
     assert board.move(0, 0, "X")
     assert board.move(1, 1, "X")
-    print(board)
 
     assert board.move(0, 0, "Y")
     assert not board.move(1, 1, "Y")
