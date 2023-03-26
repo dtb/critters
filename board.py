@@ -15,7 +15,7 @@ class Board:
             for x in range(self.height):
                 item = self.board[self.__pos(x, y)]
 
-                board += "____" if not item else str(item)
+                board += "_" if not item else "."
             board += "\n"
 
         return board

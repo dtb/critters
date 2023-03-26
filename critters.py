@@ -12,7 +12,7 @@ class BoardView(Static):
 
     def on_mount(self) -> None:
         self.update_timer = self.set_interval(
-            1, self.next_board, pause=True)
+            1/10, self.next_board, pause=True)
 
     def next_board(self) -> None:
         try:
@@ -32,9 +32,9 @@ class SimApp(App):
         yield BoardView("Running simulation...")
 
     async def on_mount(self) -> None:
-        board = Board(10, 10)
+        board = Board(100, 100)
 
-        sim = Simulation(board, critter_count=10, steps=100)
+        sim = Simulation(board, critter_count=100, steps=500, cull_every=110)
         await asyncio.to_thread(sim.run)
         self.query_one(BoardView).set_boards(sim.boards)
 

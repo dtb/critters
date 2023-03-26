@@ -1,4 +1,5 @@
 from itertools import count
+import random
 
 from board import Board
 
@@ -10,14 +11,17 @@ class Critter:
     '''A critter is an object that can move around on a board.'''
 
     def __init__(self, Brain):
-        self.name = f"{next(chars):^4}"
+        self.name = f"{next(chars):^3}"
         self.brain = Brain()
+        self.age = 0
 
     def __str__(self):
         return self.name
 
-    def behave(self, board: Board):
+    def behave(self, board: Board, simulation):
         '''Have the critter behave on the board.'''
+
+        self.age += 1
 
         behavior = self.brain(self, board)
         pos = board.locate(self)
