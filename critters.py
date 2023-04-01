@@ -13,6 +13,9 @@ def start():
 class App:
     def __init__(self) -> None:
         self.last_now = 0
+        self._init_tk()
+
+    def _init_tk(self):
         self.window = tk.Tk()
         self.window.columnconfigure(0, weight=1, minsize=600)
         self.window.rowconfigure(0, weight=0, minsize=600)
@@ -26,6 +29,7 @@ class App:
         board_frame.grid(row=0, column=0)
         self.board_canvas = tk.Canvas(
             master=board_frame, bg="white", height=600, width=600)
+        self.board_text = self.board_canvas.create_text(0, 0, anchor="nw")
         self.board_canvas.pack()
 
         buttons_frame = tk.Frame(
@@ -46,14 +50,13 @@ class App:
         print("starting")
         board = Board(100, 100)
         sim = Simulation(board, critter_count=100,
-                         steps=100 * 110, cull_every=110)
+                         steps=5 * 110, cull_every=110)
         sim.run()
 
         self.animateBoards(sim, sim.boards)
 
     def run(self):
         self.circs = []
-        # self.window.after(12, self.animate)
         self.window.mainloop()
 
     def animateBoards(self, sim: Simulation, boards):
@@ -77,7 +80,7 @@ class App:
 
         self.last_now = time.time()
         pos = 0
-        for char in board:
+        for char in board['board']:
             if char == '_':
                 pos += 1
             elif char == '.':
@@ -95,6 +98,8 @@ class App:
                 pass
             else:
                 print(f"wtf is this char: {char} at pos: {pos}")
+        self.board_canvas.itemconfig(
+            self.board_text, text=f"Generation: {board['generation']} Step: {board['step']}")
 
         if idx < len(boards) - 1:
             self.board_canvas.after(

@@ -48,19 +48,26 @@ class Simulation:
             self.__kill(critter)
         self.kill_queue = []
 
+    def save_board(self, step, generation):
+        self.boards.append({
+            "board": str(self.board),
+            "step": step,
+            "generation": generation
+        })
+
     def run(self):
         '''Run the simulation'''
 
         self.__init()
 
-        self.boards.append(str(self.board))
+        self.save_board(0, 0)
         for step in range(1, self.steps + 1):
             for critter in self.critters:
                 critter.behave(self.board, self)
 
             self.kill_queued()
 
-            self.boards.append(str(self.board))
+            self.save_board(step, step // self.cull_every)
             if step % self.cull_every == 0:
                 self._cull()
                 if len(self.critters) == 0:
