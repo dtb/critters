@@ -64,8 +64,6 @@ class Simulation:
             if step % self.cull_every == 0:
                 self._cull()
                 if len(self.critters) == 0:
-                    self.boards.append(
-                        f"All critters died after {step} steps")
                     break
 
     def _cull(self):
@@ -101,4 +99,4 @@ class Simulation:
             self.__place(self.critters[-1])
 
         output_buffer.append(str(self.board))
-        self.boards.append("".join(output_buffer))
+        # self.boards.append("".join(output_buffer))

@@ -24,6 +24,9 @@ class Board:
         return self.board[self.__pos(*pos)]
 
     def __pos(self, x: int, y: int) -> int:
+        assert y < self.height
+        assert x < self.width
+        assert x * y < self.width * self.height
         return y * self.width + x
 
     def locate(self, item) -> (int, int):
