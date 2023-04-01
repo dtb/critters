@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import asyncio
+import time
 
 from board import Board
 from simulation import Simulation
@@ -12,6 +12,7 @@ def start():
 
 class App:
     def __init__(self) -> None:
+        self.last_now = 0
         self.window = tk.Tk()
         self.window.columnconfigure(0, weight=1, minsize=600)
         self.window.rowconfigure(0, weight=0, minsize=600)
@@ -44,7 +45,8 @@ class App:
     def start(self):
         print("starting")
         board = Board(100, 100)
-        sim = Simulation(board, critter_count=100, steps=600, cull_every=110)
+        sim = Simulation(board, critter_count=100,
+                         steps=100 * 110, cull_every=110)
         sim.run()
 
         self.animateBoards(sim, sim.boards)
@@ -62,17 +64,18 @@ class App:
 
     def animateBoard(self, sim: Simulation, boards, idx):
         CRITTER_RADIUS = 6
-        for i in range(0, sim.critter_count):
-            self.circs.append(self.board_canvas.create_oval(
-                0, 0, CRITTER_RADIUS, CRITTER_RADIUS, fill="red"))
+        if len(self.circs) == 0:
+            for i in range(0, sim.critter_count):
+                self.circs.append(self.board_canvas.create_oval(
+                    0, 0, CRITTER_RADIUS, CRITTER_RADIUS, fill="red"))
 
         board = boards[idx]
         circ_index = 0
 
-        pos_y_max = 0
-        pos_x_max = 0
-        pos_x_min = 1000
-        pos_y_min = 1000
+        if self.last_now > 0:
+            print(f"took {time.time() - self.last_now} seconds to animate")
+
+        self.last_now = time.time()
         pos = 0
         for char in board:
             if char == '_':
@@ -80,18 +83,6 @@ class App:
             elif char == '.':
                 pos_x = pos % sim.board.width
                 pos_y = pos // sim.board.width
-
-                if pos_x > pos_x_max:
-                    pos_x_max = pos_x
-
-                if pos_y < pos_y_min:
-                    pos_y_min = pos_y
-
-                if pos_x < pos_x_min:
-                    pos_x_min = pos_x
-
-                if pos_y > pos_y_max:
-                    pos_y_max = pos_y
 
                 self.board_canvas.moveto(
                     self.circs[circ_index],
@@ -105,9 +96,9 @@ class App:
             else:
                 print(f"wtf is this char: {char} at pos: {pos}")
 
-        print(pos_x_max, pos_y_max, pos_x_min, pos_y_min)
-        self.board_canvas.after(
-            3, lambda idx=idx: self.animateBoard(sim, boards, idx + 1))
+        if idx < len(boards) - 1:
+            self.board_canvas.after(
+                16, lambda idx=idx: self.animateBoard(sim, boards, idx + 1))
 
 
 def run():
